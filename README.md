@@ -1,4 +1,4 @@
-# recipe-project
+# Investigating the Relationship Between Protein Content and Recipe Ratings
 
 Author: Arushi Patra
 
