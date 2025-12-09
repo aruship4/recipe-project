@@ -70,6 +70,13 @@ Describe, in detail, the data cleaning steps you took and how they affected your
 
 Embed at least one plotly plot you created in your notebook that displays the distribution of a single column (see Part 2: Report for instructions). Include a 1-2 sentence explanation about your plot, making sure to describe and interpret any trends present. (Your notebook will likely have more visualizations than your website, and that's fine. Feel free to embed more than one univariate visualization in your website if you'd like, but make sure that each embedded plot is accompanied by a description.)
 
+<iframe
+  src="assets/protein_dist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
 Embed at least one plotly plot that displays the relationship between two columns. Include a 1-2 sentence explanation about your plot, making sure to describe and interpret any trends present. (Your notebook will likely have more visualizations than your website, and that's fine. Feel free to embed more than one bivariate visualization in your website if you'd like, but make sure that each embedded plot is accompanied by a description.)
 
 Embed at least one grouped table or pivot table in your website and explain its significance.
