@@ -45,15 +45,13 @@ By analyzing these columns, we can explore how protein content, nutritional valu
 In order to best prepare my data for data analysis, I cleaned my data sets by taking the following steps:
 
 1. Filled ratings with 0 with NaN
-
-- A rating of 0 means there is no rating associated with the recipe (recipe ratings range from 1-5). Thus, I replaced ratings of 0 with NaN Some users may have submitted recipes without giving a rating. Treating these as missing ensures that the average ratings accurately reflect only the ratings that were actually provided.
-
+  - A rating of 0 means there is no rating associated with the recipe (recipe ratings range from 1-5). Thus, I replaced ratings of 0 with NaN Some users may have submitted recipes without giving a rating. Treating these as missing ensures that the average ratings accurately reflect only the ratings that were actually provided.
 2. Convert date strings to date time objects
-- Dates are stored as objects in the dataset, so I converted them to date time objects in order to perform proper analysis.
+  - Dates are stored as objects in the dataset, so I converted them to date time objects in order to perform proper analysis.
 3. Converted columns with lists as strings to actual lists
-- The `nutrition` columns stored the PDV values as a string, and the `tags` column stored tags as a string. For each one, I converted the entire string into an actual list in order to extract each tag and the Protein level for each recipe.
+  - The `nutrition` columns stored the PDV values as a string, and the `tags` column stored tags as a string. For each one, I converted the entire string into an actual list in order to extract each tag and the Protein level for each recipe.
 4. Split nutrition into separate columns
-- I split nutrition, which is stored as a list in the data set, into separate columns in order to specifically focus on the protein value.
+  - I split nutrition, which is stored as a list in the data set, into separate columns in order to specifically focus on the protein value.
 5. Calculated average rating per recipe
 
 Describe, in detail, the data cleaning steps you took and how they affected your analyses. The steps should be explained in reference to the data generating process. Show the head of your cleaned DataFrame (see Part 2: Report for instructions).
