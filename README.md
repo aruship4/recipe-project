@@ -70,6 +70,12 @@ Describe, in detail, the data cleaning steps you took and how they affected your
 
 Embed at least one plotly plot you created in your notebook that displays the distribution of a single column (see Part 2: Report for instructions). Include a 1-2 sentence explanation about your plot, making sure to describe and interpret any trends present. (Your notebook will likely have more visualizations than your website, and that's fine. Feel free to embed more than one univariate visualization in your website if you'd like, but make sure that each embedded plot is accompanied by a description.)
 
+
+### Univariate Analysis
+
+For Univariate Analysis, I examined the distribution of the protein (PDV) in a recipe when the Protein (PDV) is less than 150. When I intially plotted the protein distribution without the filter, the plot did not show much of a trend and bunched up the data into one singular bar. Thus, I added the filter to see
+any trend in the distribution. The plot shows that the distribution is skewed right, revealing that most recipes from the dataset have a low Protein (PDV). 
+
 <iframe
   src="assets/protein_dist.html"
   width="800"
@@ -77,11 +83,20 @@ Embed at least one plotly plot you created in your notebook that displays the di
   frameborder="0"
 ></iframe>
 
-Embed at least one plotly plot that displays the relationship between two columns. Include a 1-2 sentence explanation about your plot, making sure to describe and interpret any trends present. (Your notebook will likely have more visualizations than your website, and that's fine. Feel free to embed more than one bivariate visualization in your website if you'd like, but make sure that each embedded plot is accompanied by a description.)
+### Bivariate Analysis
 
 Embed at least one grouped table or pivot table in your website and explain its significance.
 
+For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see as Protein (PDV) increases, average recipe ratings incerase as well. However, this graph has various outliers when the average rating is 1, 2, 4, and 5, which is important to observe
+since outliers can impact our data analysis. Thus, these outliers need to be filtered out, which will be done for the basemodel.
 
+
+<iframe
+  src="assets/protein_vs_avg.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 ## Assessment of Missingness
 
