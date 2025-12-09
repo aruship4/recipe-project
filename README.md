@@ -42,17 +42,29 @@ By analyzing these columns, we can explore how protein content, nutritional valu
 
 ## Data Cleaning and Exploratory Data Analysis
 
-In order to best prepare my data for data analysis, I cleaned my data sets by taking the following steps:
+In order to best prepare my data for thoroough data analysis, I cleaned my data sets by taking the following steps:
 
 1. Filled ratings with 0 with NaN
-  - A rating of 0 means there is no rating associated with the recipe (recipe ratings range from 1-5). Thus, I replaced ratings of 0 with NaN Some users may have submitted recipes without giving a rating. Treating these as missing ensures that the average ratings accurately reflect only the ratings that were actually provided.
+  - A rating of 0 means there is no rating associated with the recipe (recipe ratings range from 1-5). Thus, I replaced ratings of 0 with NaN. Treating these as missing ensures that the average ratings accurately reflect only the ratings that were actually provided.
 2. Convert date strings to date time objects
-  - Dates are stored as objects in the dataset, so I converted them to date time objects in order to perform proper analysis.
+  - Dates are stored as objects in the dataset, so I converted them to date time objects in order to perform proper analysis over time. 
 3. Converted columns with lists as strings to actual lists
   - The `nutrition` columns stored the PDV values as a string, and the `tags` column stored tags as a string. For each one, I converted the entire string into an actual list in order to extract each tag and the Protein level for each recipe.
 4. Split nutrition into separate columns
   - I split nutrition, which is stored as a list in the data set, into separate columns in order to specifically focus on the protein value.
-5. Calculated average rating per recipe
+5. merged the recipes and interactions datasetsCalculated average rating per recipe `avg rating` 
+  -  I merged the two data sets on `id` from the recipes dataset and `recipe_id` from the interactions dataset to get each rating for each recipe. Then, I took the average of all the ratings for each recipe since one recipe can hold multiple ratings from various users. This allows a more general understanding of the ratings for each recipe.
+
+
+Here is the head of the cleaned dataframe with 83782 rows and 19 columns. For the sake of the website, I included the columns relevant for data analysis:
+
+| name                                 | submitted           |   calories |   protein |   avg_rating |
+|:-------------------------------------|:--------------------|-----------:|----------:|-------------:|
+| 1 brownies in the world    best ever | 2008-10-27 00:00:00 |      138.4 |         3 |            4 |
+| 1 in canada chocolate chip cookies   | 2011-04-11 00:00:00 |      595.1 |        13 |            5 |
+| 412 broccoli casserole               | 2008-05-30 00:00:00 |      194.8 |        22 |            5 |
+| millionaire pound cake               | 2008-02-12 00:00:00 |      878.3 |        20 |            5 |
+| 2000 meatloaf                        | 2012-03-06 00:00:00 |      267   |        29 |            5 |
 
 Describe, in detail, the data cleaning steps you took and how they affected your analyses. The steps should be explained in reference to the data generating process. Show the head of your cleaned DataFrame (see Part 2: Report for instructions).
 
