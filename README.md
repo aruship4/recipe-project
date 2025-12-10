@@ -57,7 +57,7 @@ In order to best prepare my data for thoroough data analysis, I cleaned my data 
 6. Added `is_main_dish` to the merged dataframe
   - `is_main_dish` is a boolean column checking if the recipe contains the tag 'main_dish'. Main dishes usually have more protein than other types of foods, such as snacks and dessert since they contain protein sources like meat, fish, tofu, beans, eggs, etc. This addition gives another way to compare recipes with more protein to recipes with less protein.
 
-Here is the head of the cleaned dataframe with 83782 rows and 19 columns. For the sake of the website, I included the columns relevant for data analysis:
+Here is the head of the cleaned dataframe with 83782 rows and 21 columns. For the website, I included the columns relevant for data analysis:
 
 | name                                 |     id | submitted           |   calories |   protein |   avg_rating | is_main_dish   |
 |:-------------------------------------|-------:|:--------------------|-----------:|----------:|-------------:|:---------------|
@@ -66,10 +66,6 @@ Here is the head of the cleaned dataframe with 83782 rows and 19 columns. For th
 | 412 broccoli casserole               | 306168 | 2008-05-30 00:00:00 |      194.8 |        22 |            5 | False          |
 | millionaire pound cake               | 286009 | 2008-02-12 00:00:00 |      878.3 |        20 |            5 | False          |
 | 2000 meatloaf                        | 475785 | 2012-03-06 00:00:00 |      267   |        29 |            5 | True           |
-
-Describe, in detail, the data cleaning steps you took and how they affected your analyses. The steps should be explained in reference to the data generating process. Show the head of your cleaned DataFrame (see Part 2: Report for instructions).
-
-Embed at least one plotly plot you created in your notebook that displays the distribution of a single column (see Part 2: Report for instructions). Include a 1-2 sentence explanation about your plot, making sure to describe and interpret any trends present. (Your notebook will likely have more visualizations than your website, and that's fine. Feel free to embed more than one univariate visualization in your website if you'd like, but make sure that each embedded plot is accompanied by a description.)
 
 
 ### Univariate Analysis
@@ -99,20 +95,65 @@ since outliers can impact our data analysis. Thus, these outliers need to be fil
   frameborder="0"
 ></iframe>
 
+### Interesting Aggregates
+
+I created a grouped table comparing protein content between main-dish recipes and non-main dishes. I create a dataframe called `protein_by_type` that shows the count, mean, median, and standard deviation for is_main_dish. The results showed that main dishes tend to have higher average protein than non-main dishes, which aligns with my expectations that meals like entrées include more protein-rich ingredients such as meat or legumes. This table helped validate that my derived variable for “main dish” was meaningful and relevant to the dataset.
+
+| is_main_dish   |   count |    mean |   median |     std |
+|:---------------|--------:|--------:|---------:|--------:|
+| False          |   58577 | 21.6066 |       11 | 42.9628 |
+| True           |   25205 | 59.9219 |       54 | 57.8012 |
+
+
 ## Assessment of Missingness
 
 
-
 ## NMAR Analysis
-I believe the `rating` column in this dataset may be NMAR (Not Missing At Random). Ratings are likely missing because some users may choose not to rate a recipe based on their personal experience, such as feeling that the recipe was extremely disappointing or not worth reviewing. This type of missingness depends on the unobserved value itself (how much they liked or disliked the recipe), which makes it NMAR rather than MAR or MCAR.
+I believe that the `protein` column is likely NMAR (Not Missing At Random). This is because the missingness of protein values likely depends on the actual protein content itself. For example, recipes with very low protein may be more likely to omit nutritional information altogether, especially desserts or snacks. Since the missingness may depend directly on the unobserved value of protein, this makes it plausibly NMAR. Additional data such as standardized nutrition reporting requirements or the source of the nutrition data could help determine whether this missingness could instead be explained by observed features (thereby making it MAR).
 
-Additionally, nutrition related columns like `protein`, `sugar`, and `carbohydrates` can be NMAR because the recipe user may not entire nutrition info due to lack of information or personal feelings (i.e. they believe the recipe are unhealthy/highly processed). Here, the missing value depends on the nutritional value of the recipe.
+I also believe the `avg_rating` column may be NMAR (Not Missing At Random). Recipes with very poor quality or confusing instructions may be less likely to receive ratings because users may abandon the recipe or choose not to leave feedback. This would make the missingness directly related to the unobserved true rating itself. Additional data such as page view counts or user interaction logs could help explain the missingness and potentially make it MAR.
 
 ### Missingness Dependency
 
+I conducted 2 permutations tests:
+- To see if the missingness of avg_rating is dependent on whether a recipe is a main dish or not. 
+- To see if 
+The missingness of avg_rating appears to depend slightly on whether a recipe is a main dish. The observed difference in missingness between main dishes and non-main dishes is very small (-0.0033), but the permutation test gives a p-value of 0.009, suggesting that this difference is statistically significant. This indicates that main dish recipes are slightly less likely to have missing average ratings than non-main dishes.
+
+
 ## Hypothesis Testing
 
+Question: Do recipes with higher protein content tend to have higher average ratings?
+
+Approach: We compared the average ratings of recipes with protein content above the median versus those at or below the median. Since main dishes generally contain more protein, we performed the test within main dishes only to reduce confounding.
+
+### Hypotheses:
+
+Null (H0) = There is no difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein = 0)
+
+Alternative (H1) = There is a dfference in average ratings between high protein and low protein recipes (mu high protein - mu low protein > 0)
+
+Test statistic: We used the difference in mean average ratings between high-protein and low-protein recipes as our test statistic
+
+Method
+
+We performed a permutation test by randomly shuffling the high/low protein labels 1000 times to simulate the distribution of mean differences under the null hypothesis.
+
+Results
+
+The observed difference in mean ratings was [insert observed difference], indicated by the red line in the plot below. The resulting p-value from the permutation test was [insert p-value].
+
+Interpretation
+
+Since the p-value is [less/greater] than 0.05, we [reject/fail to reject] the null hypothesis. This suggests that high-protein recipes [tend to / do not tend to] receive higher average ratings compared to low-protein recipes. While there is [some evidence / no strong evidence] of a positive relationship between protein content and ratings, other factors such as recipe type, sweetness, or preparation complexity may also influence ratings.
+
+Visualization
+
+We created a box plot comparing the distribution of average ratings for high-protein vs. low-protein recipes. The plot shows the spread of ratings and any noticeable differences in median ratings between the two groups.
 ## Prediction Problem
+
+Prediction Problem: Predict the protein level of recipes.
+Type of prediction problem: regression (protein is a continuous variable)
 
 
 ## Baseline Model
