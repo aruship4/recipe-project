@@ -52,19 +52,20 @@ In order to best prepare my data for thoroough data analysis, I cleaned my data 
   - The `nutrition` columns stored the PDV values as a string, and the `tags` column stored tags as a string. For each one, I converted the entire string into an actual list in order to extract each tag and the Protein level for each recipe.
 4. Split nutrition into separate columns
   - I split nutrition, which is stored as a list in the data set, into separate columns in order to specifically focus on the protein value.
-5. merged the recipes and interactions datasetsCalculated average rating per recipe `avg rating` 
+5. Merged the recipes and interactions datasets and calculated average rating per recipe `avg rating` 
   -  I merged the two data sets on `id` from the recipes dataset and `recipe_id` from the interactions dataset to get each rating for each recipe. Then, I took the average of all the ratings for each recipe since one recipe can hold multiple ratings from various users. This allows a more general understanding of the ratings for each recipe.
-
+6. Added `is_main_dish` to the merged dataframe
+  - `is_main_dish` is a boolean column checking if the recipe contains the tag 'main_dish'. Main dishes usually have more protein than other types of foods, such as snacks and dessert since they contain protein sources like meat, fish, tofu, beans, eggs, etc. This addition gives another way to compare recipes with more protein to recipes with less protein.
 
 Here is the head of the cleaned dataframe with 83782 rows and 19 columns. For the sake of the website, I included the columns relevant for data analysis:
 
-| name                                 | submitted           |   calories |   protein |   avg_rating |
-|:-------------------------------------|:--------------------|-----------:|----------:|-------------:|
-| 1 brownies in the world    best ever | 2008-10-27 00:00:00 |      138.4 |         3 |            4 |
-| 1 in canada chocolate chip cookies   | 2011-04-11 00:00:00 |      595.1 |        13 |            5 |
-| 412 broccoli casserole               | 2008-05-30 00:00:00 |      194.8 |        22 |            5 |
-| millionaire pound cake               | 2008-02-12 00:00:00 |      878.3 |        20 |            5 |
-| 2000 meatloaf                        | 2012-03-06 00:00:00 |      267   |        29 |            5 |
+| name                                 |     id | submitted           |   calories |   protein |   avg_rating | is_main_dish   |
+|:-------------------------------------|-------:|:--------------------|-----------:|----------:|-------------:|:---------------|
+| 1 brownies in the world    best ever | 333281 | 2008-10-27 00:00:00 |      138.4 |         3 |            4 | False          |
+| 1 in canada chocolate chip cookies   | 453467 | 2011-04-11 00:00:00 |      595.1 |        13 |            5 | False          |
+| 412 broccoli casserole               | 306168 | 2008-05-30 00:00:00 |      194.8 |        22 |            5 | False          |
+| millionaire pound cake               | 286009 | 2008-02-12 00:00:00 |      878.3 |        20 |            5 | False          |
+| 2000 meatloaf                        | 475785 | 2012-03-06 00:00:00 |      267   |        29 |            5 | True           |
 
 Describe, in detail, the data cleaning steps you took and how they affected your analyses. The steps should be explained in reference to the data generating process. Show the head of your cleaned DataFrame (see Part 2: Report for instructions).
 
@@ -101,6 +102,14 @@ since outliers can impact our data analysis. Thus, these outliers need to be fil
 ## Assessment of Missingness
 
 
+
+## NMAR Analysis
+I believe the `rating` column in this dataset may be NMAR (Not Missing At Random). Ratings are likely missing because some users may choose not to rate a recipe based on their personal experience, such as feeling that the recipe was extremely disappointing or not worth reviewing. This type of missingness depends on the unobserved value itself (how much they liked or disliked the recipe), which makes it NMAR rather than MAR or MCAR.
+
+Additionally, nutrition related columns like `protein`, `sugar`, and `carbohydrates` can be NMAR because the recipe user may not entire nutrition info due to lack of information or personal feelings (i.e. they believe the recipe are unhealthy/highly processed). Here, the missing value depends on the nutritional value of the recipe.
+
+### Missingness Dependency
+
 ## Hypothesis Testing
 
 ## Prediction Problem
@@ -109,6 +118,7 @@ since outliers can impact our data analysis. Thus, these outliers need to be fil
 ## Baseline Model
 
 My baseline model predicts the protein content of recipes by standardizing numerical nutrition features (calories and carbohydrates) and transforming recipe tags into numerical features using TF-IDF, then fitting a linear regression model to learn patterns in the data.
+
 
 ##  Final Model
 
