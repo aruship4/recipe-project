@@ -270,6 +270,13 @@ Significance Level: 0.05
 
 ### Results
 
+<iframe
+  src="assets/fairness_analysis.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe> 
+
 RMSE by group:
 
 is_main_dish	RMSE
