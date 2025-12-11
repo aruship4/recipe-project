@@ -248,29 +248,36 @@ Overall, the model provides accurate and useful predictions of recipe protein co
 
 ## Fairness Analysis
 
-For the fairness analysis, I evaluated whether the model performed differently for main dish recipes versus non-main dish recipes.
+To evaluate fairness of our final model, we examined whether the model’s performance differed between main-dish recipes and non-main dishes. Main dishes tend to have higher protein content, so it is important to ensure the model predicts fairly across these groups.
 
-Group Definitions
+### Approach
 
-Group 1: Main dish recipes (is_main_dish = True)
+We split the test set into two groups based on the is_main_dish column:
 
-Group 2: Non-main dish recipes (is_main_dish = False)
+Main dishes (is_main_dish = True)
 
-Metric
+Non-main dishes (is_main_dish = False)
 
-I compared the mean absolute error (MAE) of the model for both groups, since MAE directly shows how far predictions are from the true protein values.
+We then computed the RMSE for each group to measure predictive performance.
 
-Hypotheses
+Null Hypothesis (H0): The model’s RMSE is similar across main-dish and non-main-dish recipes; any observed difference is due to random chance.
 
-Null Hypothesis (H₀): The model is fair — prediction errors are similar for main dishes and non-main dishes.
+Alternative Hypothesis (H1): The model’s RMSE differs between main-dish and non-main-dish recipes.
 
-Alternative Hypothesis (H₁): The model is unfair — prediction errors for main dishes are higher than for non-main dishes.
+Test Statistic: Difference in RMSE between main-dish and non-main-dish groups (RMSE_main - RMSE_non-main).
 
-Results
+Significance Level: 0.05
 
-The observed difference in MAE between the two groups was [insert observed difference].
-After running a permutation test with 1000 shuffles, the resulting p-value was [insert p-value].
+### Results
 
-Conclusion
+RMSE by group:
 
-Since the p-value was [less than / greater than] 0.05, we [reject / fail to reject] the null hypothesis. This suggests that the model [does / does not] exhibit evidence of unfairness between main-dish and non-main-dish recipes.
+is_main_dish	RMSE
+False	        21.80
+True	        23.28
+
+Observed RMSE difference (main - non-main): 1.49
+
+Permutation p-value: 0.88
+
+Since the p-value (0.88) is greater than 0.05, we fail to reject the null hypothesis. This indicates there is no significant difference in model performance between main-dish and non-main-dish recipes, suggesting the model is reasonably fair with respect to recipe type.
