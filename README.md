@@ -158,10 +158,6 @@ Caveat: This is an observational analysis: confounding variables (recipe type, s
 
 Since the p-value is **greater** than 0.05, we **fail to reject** the null hypothesis. This suggests that high-protein recipes do not receive higher average ratings compared to low-protein recipes.
 
-Visualization
-
-We created a box plot comparing the distribution of average ratings for high-protein vs. low-protein recipes. The plot shows the spread of ratings and any noticeable differences in median ratings between the two groups.
-
 
 ## Prediction Problem
 
@@ -171,9 +167,110 @@ Type of prediction problem: regression (protein is a continuous variable)
 
 ## Baseline Model
 
-My baseline model predicts the protein content of recipes by standardizing numerical nutrition features (calories and carbohydrates) and transforming recipe tags into numerical features using TF-IDF, then fitting a linear regression model to learn patterns in the data.
 
+For the baseline model, I used a linear regression model to predict the protein content of recipes. The dataset was split into training and test sets. The model used the following features:
+
+calories (numerical)
+
+carbohydrates (numerical)
+
+tags (text data converted into numerical features using TF–IDF)
+
+The numerical features were standardized using StandardScaler so they were on comparable scales before training. For the text-based tags column, I used TF-IDF Vectorization to convert the words into numerical representations that the model could learn from.
+
+The baseline model achieved a Train RMSE of 33.127221394648664 and a Test RMSE of 26.89842012868557, along with a Train R² of 0.6010357558770942 and a Test R² of 0.641604648153275. These results indicate that the model captures some patterns in the data, but still leaves room for improvement in accurately predicting protein content.
+
+The purpose of this baseline model was to establish a simple, interpretable starting point before adding more sophisticated features and modeling techniques.
 
 ##  Final Model
 
+
+Final Model
+
+For our final model, I used a Random Forest Regressor to predict the protein content of recipes. This model builds on our baseline by incorporating engineered nutritional features and text-based features extracted from recipe tags.
+
+Features Used
+
+(I) trained the model using the following features:
+
+log_calories
+- We applied a log transformation to the calorie values using log(calories + 1) to reduce skew and limit the impact of extreme outliers.
+
+cal_to_carb_ratio: I created a calorie-to-carbohydrate ratio feature: calories / (carbohydrates + 1)
+- This captures the nutritional balance of each recipe more effectively than raw values alone.
+
+carbohydrates
+- I included total carbohydrate content as a direct macronutrient feature.
+
+tag_str
+- I combined recipe tags into a single string and used TF-IDF vectorization to extract useful text-based features from the tags.
+
+### Preprocessing and Model Pipeline
+
+I built a pipeline that:
+
+Standardized all numeric features using StandardScaler
+
+Converted text features into numerical form using TF-IDF Vectorization
+
+Trained a Random Forest Regressor for prediction
+
+### Hyperparameter Tuning
+
+We used GridSearchCV to tune the model and selected the best hyperparameters based on minimizing RMSE:
+
+Best Parameters:
+
+n_estimators = 50
+
+max_depth = None
+
+min_samples_leaf = 1
+
+Model Performance
+
+We evaluated the model using RMSE and R² on both the training and test sets:
+
+Metric	Training	Test
+RMSE	12.20	22.26
+R²	0.95	0.75
+
+The final model explains about 75% of the variance in protein content on unseen data, indicating strong predictive performance. The gap between training and test performance suggests some overfitting, but overall the model generalizes well.
+
+### Interpretation
+
+This final model significantly improves over the baseline by:
+- Using engineered nutritional ratios
+- Incorporating text information from recipe tags
+- Applying a non-linear ensemble learning method
+
+Overall, the model provides accurate and useful predictions of recipe protein content, while demonstrating reasonable generalization beyond the training data.
+
 ## Fairness Analysis
+
+For the fairness analysis, I evaluated whether the model performed differently for main dish recipes versus non-main dish recipes.
+
+Group Definitions
+
+Group 1: Main dish recipes (is_main_dish = True)
+
+Group 2: Non-main dish recipes (is_main_dish = False)
+
+Metric
+
+I compared the mean absolute error (MAE) of the model for both groups, since MAE directly shows how far predictions are from the true protein values.
+
+Hypotheses
+
+Null Hypothesis (H₀): The model is fair — prediction errors are similar for main dishes and non-main dishes.
+
+Alternative Hypothesis (H₁): The model is unfair — prediction errors for main dishes are higher than for non-main dishes.
+
+Results
+
+The observed difference in MAE between the two groups was [insert observed difference].
+After running a permutation test with 1000 shuffles, the resulting p-value was [insert p-value].
+
+Conclusion
+
+Since the p-value was [less than / greater than] 0.05, we [reject / fail to reject] the null hypothesis. This suggests that the model [does / does not] exhibit evidence of unfairness between main-dish and non-main-dish recipes.
