@@ -123,9 +123,12 @@ The missingness of avg_rating appears to depend slightly on whether a recipe is 
 
 ## Hypothesis Testing
 
-Question: Do recipes with higher protein content tend to have higher average ratings?
+Question: Do recipes with higher protein levels tend to have higher average ratings than recipes with low protein levels?
 
 Approach: We compared the average ratings of recipes with protein content above the median versus those at or below the median. Since main dishes generally contain more protein, we performed the test within main dishes only to reduce confounding.
+
+
+
 
 ### Hypotheses:
 
@@ -133,23 +136,33 @@ Null (H0) = There is no difference in average ratings between high protein and l
 
 Alternative (H1) = There is a dfference in average ratings between high protein and low protein recipes (mu high protein - mu low protein > 0)
 
-Test statistic: We used the difference in mean average ratings between high-protein and low-protein recipes as our test statistic
+Test statistic: We used the difference in mean average ratings between high-protein and low-protein recipes as our test statistic (high - low)
 
-Method
+Method: We performed a permutation test by randomly shuffling the high/low protein labels 5000 times to simulate the distribution of mean differences under the null hypothesis.
 
-We performed a permutation test by randomly shuffling the high/low protein labels 1000 times to simulate the distribution of mean differences under the null hypothesis.
+### Results
 
-Results
+<iframe
+  src="assets/file-hypothesis_test.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
-The observed difference in mean ratings was [insert observed difference], indicated by the red line in the plot below. The resulting p-value from the permutation test was [insert p-value].
+The observed difference in mean ratings was -0.025375283811557736, indicated by the red line in the plot below. The resulting p-value from the permutation test was 1.0
 
-Interpretation
+If p_value < 0.05: “We reject H0 at α = 0.05. The data provide evidence that high-protein recipes get higher average ratings than low-protein recipes.”
 
-Since the p-value is [less/greater] than 0.05, we [reject/fail to reject] the null hypothesis. This suggests that high-protein recipes [tend to / do not tend to] receive higher average ratings compared to low-protein recipes. While there is [some evidence / no strong evidence] of a positive relationship between protein content and ratings, other factors such as recipe type, sweetness, or preparation complexity may also influence ratings.
+If p_value >= 0.05: “We fail to reject H0 at α = 0.05. The data do not provide strong evidence that high-protein recipes get higher average ratings than low-protein recipes.”
+Caveat: This is an observational analysis: confounding variables (recipe type, sweetness, ingredient quality) could explain part of any observed relationship.
+
+Since the p-value is **greater** than 0.05, we **fail to reject** the null hypothesis. This suggests that high-protein recipes do not receive higher average ratings compared to low-protein recipes.
 
 Visualization
 
 We created a box plot comparing the distribution of average ratings for high-protein vs. low-protein recipes. The plot shows the spread of ratings and any noticeable differences in median ratings between the two groups.
+
+
 ## Prediction Problem
 
 Prediction Problem: Predict the protein level of recipes.
