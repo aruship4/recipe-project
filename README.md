@@ -115,19 +115,12 @@ I also believe the `avg_rating` column may be NMAR (Not Missing At Random). Reci
 
 ### Missingness Dependency
 
-I conducted 2 permutations tests:
-- To see if the missingness of avg_rating is dependent on whether a recipe is a main dish or not. 
-- To see if the missingness of avg_rating appears to depend slightly on whether a recipe is a main dish. The observed difference in missingness between main dishes and non-main dishes is very small (-0.0033), but the permutation test gives a p-value of 0.009, suggesting that this difference is statistically significant. This indicates that main dish recipes are slightly less likely to have missing average ratings than non-main dishes.
 
+To better understand why some recipes are missing avg_rating, I performed two permutation tests. Each test examines whether the missingness of avg_rating depends on another observed variable.
 
+1. Missingness of avg_rating vs. is_main_dish
 
-
-
-### Missingness of `avg_rating`
-
-
-
-### Missingness of 
+The first permutation test checks whether the probability that avg_rating is missing differs between main-dish recipes and non–main-dish recipes.
 
 <iframe
   src="assets/missingness_diff_main_dish.html"
@@ -135,6 +128,23 @@ I conducted 2 permutations tests:
   height="600"
   frameborder="0"
 ></iframe>
+
+
+Observed difference: -0.0033
+(meaning main dishes have slightly lower missingness than non-main dishes)
+
+
+Interpretation of the plot:
+The permutation distribution is centered around 0, as expected under the null hypothesis of independence. The observed difference lies slightly in the left tail.
+
+Conclusion:
+Although the observed difference is extremely small in absolute size, the permutation distribution shows that this difference is unlikely to occur by random chance, producing a small p-value.
+
+Interpretation:
+There is weak but statistically detectable evidence that main-dish recipes are slightly less likely to have missing average ratings than non-main dishes. The effect is small and not practically meaningful, but it suggests that missingness is not completely random with respect to whether a recipe is a main dish.
+
+
+2. Missingness of avg_rating vs. recipe duration (minutes > 60)
 
 
 <iframe
@@ -145,14 +155,30 @@ I conducted 2 permutations tests:
 ></iframe>
 ## Hypothesis Testing
 
-Question: Do recipes with higher protein levels tend to have higher average ratings than recipes with low protein levels?
 
-Approach: We compared the average ratings of recipes with protein content above the median versus those at or below the median. Since main dishes generally contain more protein, we performed the test within main dishes only to reduce confounding.
+The second permutation test checks whether the missingness of avg_rating differs between long recipes (more than 60 minutes) and shorter recipes.
 
+Observed difference: 0.0136
+(meaning long recipes have a noticeably higher rate of missing ratings)
 
+Interpretation of the plot:
+The permutation distribution is tightly centered near 0. The observed value (≈ 0.014) lies far in the right tail, well outside the range of typical permuted differences.
 
+Conclusion:
+This produces a very small p-value, providing strong evidence that missingness of avg_rating depends on recipe length.
+
+Interpretation:
+Recipes that take longer than an hour to prepare appear substantially more likely to be missing average ratings. This suggests that users may be less likely to rate or review long recipes—possibly because they choose quicker dishes more often or because longer recipes are attempted less frequently.
+
+Summary of Missingness Findings
+
+Missingness of avg_rating is not independent of at least two observed variables (main dish status and recipe duration). The dependency with recipe duration is much stronger and more practically meaningful. These results support the idea that the avg_rating variable is MAR (Missing At Random) with respect to at least some observed features—meaning the missingness can be partially explained by variables included in the dataset.mThis suggests that imputations or modeling approaches that condition on recipe attributes (like duration) may be appropriate, whereas approaches assuming MCAR would not be justified.
 
 ### Hypotheses:
+
+Question: Do recipes with higher protein levels tend to have higher average ratings than recipes with low protein levels? 
+
+Approach: We compared the average ratings of recipes with protein content above the median versus those at or below the median. Since main dishes generally contain more protein, we performed the test within main dishes only to reduce confounding.
 
 Null (H0) = There is no difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein = 0)
 
