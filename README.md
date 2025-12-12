@@ -1,10 +1,10 @@
-# Investigating the Relationship Between Protein Content and Recipe Ratings
+# Exploring the Relationship Between Protein Content and Recipe Ratings
 
 Author: Arushi Patra
 
 ## Overview
 
-This data science project (for the DSC 80 class at UCSD) aims to investigate the relationship between protein content and ratings for a recipe.
+This data science project (for the DSC 80 class at UCSD) aims to determine if any relationship exists between protein content and ratings for a recipe.
 
 ## Introduction
 
@@ -117,10 +117,32 @@ I also believe the `avg_rating` column may be NMAR (Not Missing At Random). Reci
 
 I conducted 2 permutations tests:
 - To see if the missingness of avg_rating is dependent on whether a recipe is a main dish or not. 
-- To see if 
-The missingness of avg_rating appears to depend slightly on whether a recipe is a main dish. The observed difference in missingness between main dishes and non-main dishes is very small (-0.0033), but the permutation test gives a p-value of 0.009, suggesting that this difference is statistically significant. This indicates that main dish recipes are slightly less likely to have missing average ratings than non-main dishes.
+- To see if the missingness of avg_rating appears to depend slightly on whether a recipe is a main dish. The observed difference in missingness between main dishes and non-main dishes is very small (-0.0033), but the permutation test gives a p-value of 0.009, suggesting that this difference is statistically significant. This indicates that main dish recipes are slightly less likely to have missing average ratings than non-main dishes.
 
 
+
+
+
+### Missingness of `avg_rating`
+
+
+
+### Missingness of 
+
+<iframe
+  src="assets/missingness_diff_main_dish.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+
+<iframe
+  src="assets/missingness_minutes.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 ## Hypothesis Testing
 
 Question: Do recipes with higher protein levels tend to have higher average ratings than recipes with low protein levels?
