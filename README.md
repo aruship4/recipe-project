@@ -42,7 +42,7 @@ By analyzing these columns, we can explore how protein content, nutritional valu
 
 ## Data Cleaning and Exploratory Data Analysis
 
-In order to best prepare my data for thoroough data analysis, I cleaned my data sets by taking the following steps:
+In order to best prepare my data for thorough data analysis, I cleaned my data sets by taking the following steps:
 
 1. Filled ratings with 0 with NaN
   - A rating of 0 means there is no rating associated with the recipe (recipe ratings range from 1-5). Thus, I replaced ratings of 0 with NaN. Treating these as missing ensures that the average ratings accurately reflect only the ratings that were actually provided.
@@ -84,7 +84,7 @@ any trend in the distribution. The plot shows that the distribution is skewed ri
 
 Embed at least one grouped table or pivot table in your website and explain its significance.
 
-For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see as Protein (PDV) increases, average recipe ratings incerase as well. However, this graph has various outliers when the average rating is 1, 2, 4, and 5, which is important to observe
+For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see as Protein (PDV) increases, average recipe ratings increase as well. However, this graph has various outliers when the average rating is 1, 2, 4, and 5, which is important to observe
 since outliers can impact our data analysis. Thus, these outliers need to be filtered out, which will be done for the basemodel.
 
 
@@ -172,7 +172,7 @@ Recipes that take longer than an hour to prepare appear substantially more likel
 
 Summary of Missingness Findings
 
-Missingness of avg_rating is not independent of at least two observed variables (main dish status and recipe duration). The dependency with recipe duration is much stronger and more practically meaningful. These results support the idea that the avg_rating variable is MAR (Missing At Random) with respect to at least some observed features—meaning the missingness can be partially explained by variables included in the dataset.mThis suggests that imputations or modeling approaches that condition on recipe attributes (like duration) may be appropriate, whereas approaches assuming MCAR would not be justified.
+Missingness of avg_rating is not independent of at least two observed variables (main dish status and recipe duration). The dependency with recipe duration is much stronger and more practically meaningful. These results support the idea that the avg_rating variable is MAR (Missing At Random) with respect to at least some observed features—meaning the missingness can be partially explained by variables included in the dataset. This suggests that imputations or modeling approaches that condition on recipe attributes (like duration) may be appropriate, whereas approaches assuming MCAR would not be justified.
 
 ### Hypotheses:
 
@@ -182,7 +182,7 @@ Approach: We compared the average ratings of recipes with protein content above 
 
 Null (H0) = There is no difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein = 0)
 
-Alternative (H1) = There is a dfference in average ratings between high protein and low protein recipes (mu high protein - mu low protein > 0)
+Alternative (H1) = There is a difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein > 0)
 
 Test statistic: We used the difference in mean average ratings between high-protein and low-protein recipes as our test statistic (high - low)
 
