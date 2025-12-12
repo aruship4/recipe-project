@@ -279,9 +279,10 @@ Model Performance
 
 We evaluated the model using RMSE and R² on both the training and test sets:
 
-Metric	Training	Test
-RMSE	12.20	22.26
-R²	0.95	0.75
+| Metric   | Training|   Test  |
+|:---------|--------:|--------:|
+| RMSE     |  12.20 | 22.26 |
+| R²       |  0.95  | 0.75  |
 
 The final model explains about 75% of the variance in protein content on unseen data, indicating strong predictive performance. The gap between training and test performance suggests some overfitting, but overall the model generalizes well.
 
@@ -298,13 +299,12 @@ Overall, the model provides accurate and useful predictions of recipe protein co
 
 To evaluate fairness of our final model, we examined whether the model’s performance differed between main-dish recipes and non-main dishes. Main dishes tend to have higher protein content, so it is important to ensure the model predicts fairly across these groups.
 
-### Approach
 
 We split the test set into two groups based on the is_main_dish column:
 
-Main dishes (is_main_dish = True)
+- Main dishes (is_main_dish = True)
 
-Non-main dishes (is_main_dish = False)
+- Non-main dishes (is_main_dish = False)
 
 We then computed the RMSE for each group to measure predictive performance.
 
@@ -330,6 +330,12 @@ RMSE by group:
 is_main_dish	RMSE
 False	        21.80
 True	        23.28
+
+
+| is_main_dish | RMSE|
+|:---------|--------:|
+| RMSE     |  21.80  |
+| R²       |  23.28  |
 
 Observed RMSE difference (main - non-main): 1.49
 
