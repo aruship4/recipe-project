@@ -327,10 +327,6 @@ Significance Level: 0.05
 
 RMSE by group:
 
-is_main_dish	RMSE
-False	        21.80
-True	        23.28
-
 
 | is_main_dish | RMSE|
 |:---------|--------:|
