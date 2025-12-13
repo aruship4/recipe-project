@@ -84,8 +84,7 @@ any trend in the distribution. The plot shows that the distribution is skewed ri
 
 Embed at least one grouped table or pivot table in your website and explain its significance.
 
-For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see as Protein (PDV) increases, average recipe ratings increase as well. However, this graph has various outliers when the average rating is 1, 2, 4, and 5, which is important to observe
-since outliers can impact our data analysis. Thus, these outliers need to be filtered out, which will be done for the basemodel.
+For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see as Protein (PDV) increases, average recipe ratings increase as well.
 
 
 <iframe
