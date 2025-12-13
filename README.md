@@ -142,7 +142,7 @@ I ran a permutation test by shuffling the missingness of average rating 1000 tim
 
 The red line on the graph represents the **observed statistic** of **-0.003**, meaning that meaning main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that we found **(0.009)** is < 0.05, we **reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish` (whether a recipe is a main dish or not)
 
-2. Missingness of avg_rating vs. recipe duration.
+2. Missingness of avg_rating vs. recipe duration (minutes).
 
 The second permutation test checks whether the missingness of avg_rating depends on the `minutes` column.
 
@@ -160,12 +160,8 @@ The second permutation test checks whether the missingness of avg_rating depends
   height="600"
   frameborder="0"
 ></iframe>
-## Hypothesis Testing
 
-
-
-
-
+The red line on the graph represents the **observed statistic** of **-0.003**, meaning that meaning main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that we found **(0.009)** is < 0.05, we **reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish` (whether a recipe is a main dish or not)
 Observed difference: 0.0136
 (meaning long recipes have a noticeably higher rate of missing ratings)
 
@@ -178,9 +174,14 @@ This produces a very small p-value, providing strong evidence that missingness o
 Interpretation:
 Recipes that take longer than an hour to prepare appear substantially more likely to be missing average ratings. This suggests that users may be less likely to rate or review long recipes—possibly because they choose quicker dishes more often or because longer recipes are attempted less frequently.
 
-Summary of Missingness Findings
+### Summary of Missingness Findings
 
 Missingness of avg_rating is not independent of at least two observed variables (main dish status and recipe duration). The dependency with recipe duration is much stronger and more practically meaningful. These results support the idea that the avg_rating variable is MAR (Missing At Random) with respect to at least some observed features—meaning the missingness can be partially explained by variables included in the dataset. This suggests that imputations or modeling approaches that condition on recipe attributes (like duration) may be appropriate, whereas approaches assuming MCAR would not be justified.
+
+
+## Hypothesis Testing
+
+To further explore the relationship between protein content and average ratings, I set up the following hypotheses: 
 
 ### Hypotheses:
 
