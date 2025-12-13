@@ -38,7 +38,7 @@ The second dataset, `interactions`, contains 731927 rows. Each row holds a revie
 | `'review'`    | Review text         |
 
 
-By analyzing these columns, we can explore how protein content, nutritional values, and recipe characteristics influence how users rate recipes, providing insight into what makes a meal both nutritious and high-rated.
+By analyzing these columns, I can explore how protein content, nutritional values, and recipe characteristics influence how users rate recipes, providing insight into what makes a meal both nutritious and high-rated.
 
 ## Data Cleaning and Exploratory Data Analysis
 
@@ -138,7 +138,7 @@ I ran a permutation test by shuffling the missingness of average rating 1000 tim
 ></iframe>
 
 
-The red line on the graph represents the **observed statistic** of **-0.003**, meaning that meaning main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that we found **(0.009)** is < 0.05, we **reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish` (whether a recipe is a main dish or not)
+The red line on the graph represents the **observed statistic** of **-0.003**, meaning that meaning main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that I found **(0.009)** is < 0.05, I **rejected the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish` (whether a recipe is a main dish or not)
 
 2. Missingness of avg_rating vs. sodium (PDV).
 
@@ -159,7 +159,7 @@ The second permutation test checks whether the missingness of avg_rating depends
   frameborder="0"
 ></iframe>
 
-The red line on the graph represents the **observed statistic** of **-0.667**, meaning that mean main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that we found **(0.7696)** is > 0.05, we **fail to reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish`.
+The red line on the graph represents the **observed statistic** of **-0.667**, meaning that mean main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that I found **(0.7696)** is > 0.05, I **failed to reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish`.
 
 ### Summary of Missingness Findings
 
@@ -172,15 +172,15 @@ To further explore the relationship between protein content and average ratings,
 
 Question: Do recipes with higher protein levels tend to have higher average ratings than recipes with low protein levels? 
 
-Approach: We compared the average ratings of recipes with protein content above the median versus those at or below the median. Since main dishes generally contain more protein, we performed the test within main dishes only to reduce confounding.
+Approach: I compared the average ratings of recipes with protein content above the median versus those at or below the median. Since main dishes generally contain more protein, I performed the test within main dishes only to reduce confounding.
 
-Null (H0) = There is no difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein = 0)
+**Null Hypothesis (H0):** There is no difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein = 0)
 
-Alternative (H1) = There is a difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein > 0)
+**Alternative Hypotheses (H1)** There is a difference in average ratings between high protein and low protein recipes (mu high protein - mu low protein > 0)
 
-Test statistic: We used the difference in mean average ratings between high-protein and low-protein recipes as our test statistic (high - low)
+**Test statistic:** I used the difference in mean average ratings between high-protein and low-protein recipes as our test statistic (high - low)
 
-Method: We performed a permutation test by randomly shuffling the high/low protein labels 5000 times to simulate the distribution of mean differences under the null hypothesis.
+**Method:** I performed a permutation test by randomly shuffling the high/low protein labels 5000 times to simulate the distribution of mean differences under the null hypothesis.
 
 ### Results
 
@@ -196,10 +196,9 @@ The observed difference in mean ratings was -0.025375283811557736, indicated by 
 If p_value < 0.05: “We reject H0 at α = 0.05. The data provide evidence that high-protein recipes get higher average ratings than low-protein recipes.”
 
 If p_value >= 0.05: “We fail to reject H0 at α = 0.05. The data do not provide strong evidence that high-protein recipes get higher average ratings than low-protein recipes.”
+- Caveat: This is an observational analysis: confounding variables (recipe type, sweetness, ingredient quality) could explain part of any observed relationship.
 
-Caveat: This is an observational analysis: confounding variables (recipe type, sweetness, ingredient quality) could explain part of any observed relationship.
-
-Since the p-value is **greater** than 0.05, we **fail to reject** the null hypothesis. This suggests that high-protein recipes do not receive higher average ratings compared to low-protein recipes.
+Since the p-value is **greater** than 0.05, I **failed to reject** the null hypothesis. This suggests that high-protein recipes do not receive higher average ratings compared to low-protein recipes.
 
 ## Prediction Problem
 
@@ -216,20 +215,20 @@ For the baseline model, I used a linear regression model to predict the protein 
 
 The numerical features were standardized using StandardScaler so they were on comparable scales before training. For the text-based tags column, I used TF-IDF Vectorization to convert the words into numerical representations that the model could train from.
 
-The baseline model achieved a Train RMSE of 33.127 and a Test RMSE of 26.898, along with a Train R² of 0.601 and a Test R² of 0.642. These results indicate that the model captures some patterns in the data, but still leaves room for improvement in accurately predicting protein content.
+The baseline model achieved a **Train RMSE of 33.127** and a **Test RMSE of 26.898**, along with a **Train R² of 0.601** and a **Test R² of 0.642.** These results indicate that the model captures some patterns in the data, but still leaves room for improvement in accurately predicting protein content.
 
 The purpose of this baseline model was to establish a simple, interpretable starting point before adding more sophisticated features and modeling techniques.
 
 ##  Final Model
 
-For our final model, I used a Random Forest Regressor to predict the protein content of recipes. This model builds on our baseline by incorporating engineered nutritional features and text-based features extracted from recipe tags.
+For our final model, I used a **Random Forest Regressor** to predict the protein content of recipes. This model builds on our baseline by incorporating engineered nutritional features and text-based features extracted from recipe tags.
 
 ### Features Used:
 
 I trained the model using the following features:
 
 - log_calories
-  - We applied a log transformation to the calorie values using log(calories + 1) to reduce skew and limit the impact of extreme outliers.
+  - I applied a log transformation to the calorie values using log(calories + 1) to reduce skew and limit the impact of extreme outliers.
 
 - cal_to_carb_ratio: I created a calorie-to-carbohydrate ratio feature: calories / (carbohydrates + 1)
   - This captures the nutritional balance of each recipe more effectively than raw values alone.
@@ -250,7 +249,7 @@ I built a pipeline that:
 
 ### Hyperparameter Tuning
 
-We used GridSearchCV to tune the model and selected the best hyperparameters based on minimizing RMSE:
+I used GridSearchCV to tune the model and selected the best hyperparameters based on minimizing RMSE:
 
 Best Parameters:
 
@@ -260,21 +259,20 @@ Best Parameters:
 
 ### Model Performance
 
-We evaluated the model using RMSE and R² on both the training and test sets:
+I evaluated the model using RMSE and R² on both the training and test sets:
 
 | Metric   | Training|   Test  |
 |:---------|--------:|--------:|
 | RMSE     |  12.20 | 22.26 |
 | R²       |  0.95  | 0.75  |
 
-The final model explains about 75% of the variance in protein content on unseen data, indicating strong predictive performance. The gap between training and test performance suggests some overfitting, but overall the model generalizes well.
+The final model explains about **75%** of the variance in protein content on unseen data, indicating strong predictive performance. The gap between training and test performance suggests some overfitting, but overall the model generalizes well. The Test RMSE decreased from **26.898 → 22.26** (an improvement of ~4.64 points). Additionally, the Train R² increased from 0.601 → 0.95, indicating the model captures complex relationships in the training set.
 
 ### Interpretation
 
 This final model significantly improves over the baseline by:
-- Using engineered nutritional ratios
-- Incorporating text information from recipe tags
-- Applying a non-linear ensemble learning method
+- Using **engineered nutritional ratios**
+- Incorporating **text information** from recipe tags
 
 Overall, the model provides accurate and useful predictions of recipe protein content, while demonstrating reasonable generalization beyond the training data.
 
@@ -282,13 +280,12 @@ Overall, the model provides accurate and useful predictions of recipe protein co
 
 To evaluate fairness of our final model, we examined whether the model’s performance differed between main-dish recipes and non-main dishes. Main dishes tend to have higher protein content, so it is important to ensure the model predicts fairly across these groups.
 
-
-We split the test set into two groups based on the is_main_dish column:
+I split the test set into two groups based on the is_main_dish column:
 
 - Main dishes (is_main_dish = True)
 - Non-main dishes (is_main_dish = False)
 
-We then computed the RMSE for each group to measure predictive performance.
+I then computed the RMSE for each group to measure predictive performance.
 
 **Null Hypothesis (H0):** The model’s RMSE is similar across main-dish and non-main-dish recipes; any observed difference is due to random chance.
 
@@ -308,7 +305,6 @@ We then computed the RMSE for each group to measure predictive performance.
 ></iframe> 
 
 RMSE by group:
-
 
 | is_main_dish | RMSE|
 |:---------|--------:|
