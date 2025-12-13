@@ -202,26 +202,39 @@ If p_value < 0.05: “We reject H0 at α = 0.05. The data provide evidence that 
 If p_value >= 0.05: “We fail to reject H0 at α = 0.05. The data do not provide strong evidence that high-protein recipes get higher average ratings than low-protein recipes.”
 - Caveat: This is an observational analysis: confounding variables (recipe type, sweetness, ingredient quality) could explain part of any observed relationship.
 
-Since the p-value is **greater** than 0.05, I **failed to reject** the null hypothesis. This suggests that high-protein recipes do not receive higher average ratings compared to low-protein recipes.
+Since the **p-value is greater than 0.05**, we **fail to reject the null hypothesis**. This indicates that there is no evidence from our data that high-protein recipes receive higher average ratings than low-protein recipes. In our sample, the observed difference in ratings was slightly negative, suggesting that low-protein recipes had somewhat higher average ratings. However, this observation does not provide conclusive proof, and the difference could be due to random variation.
 
 ## Prediction Problem
 
-Prediction Problem: Predict the protein level of recipes.
-Type of prediction problem: regression (protein is a continuous variable)
+**Prediction Problem:** Predict the protein level of recipes.
+**Type of prediction problem:** regression (protein is a continuous variable)
+
+**Response variable:** The response variable is `protein` (grams per serving). We chose this variable because protein is a key nutritional component that influences how a recipe fits into a diet or meal plan. Accurate prediction of protein content can help users make informed dietary choices.
+
+**Evaluation metrics:** 
+We chose **RMSE** and **R²** because they are well-suited for regression problems and provide complementary insights:
+
+- **RMSE** measures the average magnitude of prediction errors in the same units as the response variable (grams of protein). This makes it **directly interpretable** and easy to communicate. We preferred RMSE over Mean Absolute Error (MAE) because RMSE penalizes larger errors more heavily, which is useful if large deviations in protein prediction are particularly undesirable.
+
+- **R²** indicates the proportion of variance in protein content that is explained by the model. This gives a sense of **how well the model captures the underlying patterns** in the data beyond just the average error. We chose R² over metrics like adjusted R² because we are primarily comparing models with similar numbers of features and want a straightforward measure of explanatory power.
+
+Together, RMSE and R² provide a **balanced assessment** of both prediction accuracy (RMSE) and model fit/explanatory ability (R²), making them more informative than using a single metric alone.
+
+***Features at the time of prediction:*** Only information available before cooking is used to predict protein content. For the baseline model, this includes numerical features like **calories and carbohydrates, and text-based tags converted with TF–IDF.** Features such as user ratings, reviews, or any post-cooking metrics are excluded, because they would only be available **after the recipe is completed**. This ensures the model makes predictions based on realistic, actionable information.
+
 
 ## Baseline Model
 
-For the baseline model, I used a linear regression model to predict the protein content of recipes. The dataset was split into training and test sets. The model used the following features:
+For the baseline model, I used a **linear regression model** to predict the protein content of recipes. The dataset was split into training and test sets. The model used the following features:
 
-- Calories (PDV) (numerical)
-- Carbohydrates (PDV) (numerical)
+- Calories (PDV) (quantitative - continuous numeric variable)
+- Carbohydrates (PDV) (quantitative - continuous numeric variable)
 - tags (text data converted into numerical features using TF–IDF)
+    - Originally nominal, but after TF–IDF vectorization, they become numerical features (continuous values between 0 and 1).
 
 The numerical features were standardized using StandardScaler so they were on comparable scales before training. For the text-based tags column, I used TF-IDF Vectorization to convert the words into numerical representations that the model could train from.
 
-The baseline model achieved a **Train RMSE of 33.127** and a **Test RMSE of 26.898**, along with a **Train R² of 0.601** and a **Test R² of 0.642.** These results indicate that the model captures some patterns in the data, but still leaves room for improvement in accurately predicting protein content.
-
-The purpose of this baseline model was to establish a simple, interpretable starting point before adding more sophisticated features and modeling techniques.
+The baseline model achieved a **Train RMSE of 33.127** and a **Test RMSE of 26.898**, along with a **Train R² of 0.601** and a **Test R² of 0.642.** While the model explains a moderate amount of variance (Test R² = 0.642), the RMSE of ~27 grams indicates that predictions can still be off by a substantial amount. Thus, this baseline provides a simple, interpretable starting point but would likely need additional features or more sophisticated modeling to achieve high predictive accuracy.
 
 ##  Final Model
 
