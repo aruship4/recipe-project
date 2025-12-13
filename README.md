@@ -82,9 +82,7 @@ any trend in the distribution. The plot shows that the distribution is skewed ri
 
 ### Bivariate Analysis
 
-Embed at least one grouped table or pivot table in your website and explain its significance.
-
-For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see as Protein (PDV) increases, average recipe ratings increase as well.
+For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see big clusters around average ratings of 4 and 5, indicating that a large portion of the dataset lies here. Using this data, we will further explore the relationship between protein and average ratings to see if any correlation does exist.
 
 <iframe
   src="assets/protein_vs_avg.html"
