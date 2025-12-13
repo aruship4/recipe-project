@@ -105,8 +105,88 @@ I created a grouped table comparing protein content between main-dish recipes an
 | True           |   25205 | 59.9219 |       54 | 57.8012 |
 
 
+
+### Missingness Dependency
+
+We moved on to examine the missingness of `'rating'` in the merged DataFrame by testing the dependency of its missingness. We are investigating whether the missiness in the `'rating'` column depends on the column `'prop_sugar'`, which is the proportion of sugar out of the total calories, or the column `'n_steps'`, which is the number of steps of the recipe.
+
+> Proportion of Sugar and Rating
+
+**Null Hypothesis:** The missingness of ratings does not depend on the proportion of sugar in the recipe.
+
+**Alternate Hypothesis:** The missingness of ratings does depend on the proportion of sugar in the recipe.
+
+**Test Statistic:** The absolute difference of mean in the proportion of sugar of the distribution of the group without missing ratings and the distribution of the group without missing ratings.
+
+**Significance Level:** 0.05
+
+<iframe
+  src="assets/distr_rating_sugar.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+We ran a permutation test by shuffling the missingness of rating for 1000 times to collect 1000 simulating mean differences in the two distributions as described in the test statistic.
+
+<iframe
+  src="assets/empirical_diff_sugar.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The **observed statistic** of **0.0063** is indicated by the red vertical line on the graph. Since the **p_value** that we found **(0.0)** is < 0.05 which is the significance level that we set, we **reject the null hypothesis**. The missingness of `'rating'` does depend on the `'prop_sugar'`, which is proportion of sugar in the recipe.
+
+> Minutes and Rating
+
+**Null Hypothesis:** The missingness of ratings does not depend on the cooking time of the recipe in minutes.
+
+**Alternate Hypothesis:** The missingness of ratings does depend on the cooking time of the recipe in minutes.
+
+**Test Statistic:** The absolute difference of mean in cooking time of the recipe in minutes of the distribution of the group without missing ratings and the distribution of the group without missing ratings.
+
+**Significance Level:** 0.05
+
+<iframe
+  src="assets/empirical_diff_prescale.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Due to the outliers in cooking time, it is difficult to identify the shapes of the two distributions, so we update the scale to take a closer look.
+
+<iframe
+  src="assets/distr_rating_minutes.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+We ran another permutation test by shuffling the missingness of rating for 1000 times to collect 1000 simulating mean differences in the two distributions as described in the test statistic.
+
+<iframe
+  src="assets/empirical_diff_minutes.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The **observed statistic** of **51.4524** is indicated by the red vertical line on the graph. Since the **p-value** that we found **(0.123)** is > 0.05 which is the significance level that we set, we **fail to reject the null hypothesis**. The missingness of rating does not depend on the cooking time in minutes of the recipe.
+
+
+
+
+
+
+
+
+
+
 ## Assessment of Missingness
 
+The `avg_rating` column has a significant amount of missing values (2609 rows have an average rating missing), which is the column I used to assess missingness for the recipes dataframe.
 
 ## NMAR Analysis
 I believe that the `protein` column is likely NMAR (Not Missing At Random). This is because the missingness of protein values likely depends on the actual protein content itself. For example, recipes with very low protein may be more likely to omit nutritional information altogether, especially desserts or snacks. Since the missingness may depend directly on the unobserved value of protein, this makes it plausibly NMAR. Additional data such as standardized nutrition reporting requirements or the source of the nutrition data could help determine whether this missingness could instead be explained by observed features (thereby making it MAR).
@@ -122,8 +202,15 @@ To better understand why some recipes are missing avg_rating, I performed two pe
 
 The first permutation test checks whether the probability that avg_rating is missing differs between main-dish recipes and non–main-dish recipes.
 
+**Null Hypothesis:** The missingness of average ratings does not depend on the fact that a recipe is a main-dish or not.
+
+**Alternate Hypothesis:** The missingness of average ratings does depend on the fact that a recipe is a main-dish or not.
+
+**Test Statistic:** The absolute difference of mean in the proportion of sugar of the distribution of the group without missing ratings and the distribution of the group without missing ratings.
+
+
 <iframe
-  src="assets/missingness_diff_main_dish.html"
+  src="assets/missingness_ismaindish.html"
   width="800"
   height="600"
   frameborder="0"
@@ -133,19 +220,21 @@ The first permutation test checks whether the probability that avg_rating is mis
 Observed difference: -0.0033
 (meaning main dishes have slightly lower missingness than non-main dishes)
 
-
 Interpretation of the plot:
 The permutation distribution is centered around 0, as expected under the null hypothesis of independence. The observed difference lies slightly in the left tail.
 
 Conclusion:
-Although the observed difference is extremely small in absolute size, the permutation distribution shows that this difference is unlikely to occur by random chance, producing a small p-value.
+Although the observed difference is extremely small in absolute size, the permutation distribution shows that the average rating is dependent on whether the recipe is a main dish or not.
 
-Interpretation:
-There is weak but statistically detectable evidence that main-dish recipes are slightly less likely to have missing average ratings than non-main dishes. The effect is small and not practically meaningful, but it suggests that missingness is not completely random with respect to whether a recipe is a main dish.
+2. Missingness of avg_rating vs. recipe duration.
 
+The second permutation test checks whether the missingness of avg_rating depends on the `minutes` column.
 
-2. Missingness of avg_rating vs. recipe duration (minutes > 60)
+**Null Hypothesis:** The missingness of ratings does not depend on the minutes it takes to make the recipe
 
+**Alternate Hypothesis:** The missingness of ratings does depend on on the minutes it takes to make the recipe.
+
+**Test Statistic:** The absolute difference in average cooking time (minutes) between recipes with missing `avg_rating` and non-missing `avg_rating`.
 
 <iframe
   src="assets/missingness_minutes.html"
@@ -156,7 +245,8 @@ There is weak but statistically detectable evidence that main-dish recipes are s
 ## Hypothesis Testing
 
 
-The second permutation test checks whether the missingness of avg_rating differs between long recipes (more than 60 minutes) and shorter recipes.
+
+
 
 Observed difference: 0.0136
 (meaning long recipes have a noticeably higher rate of missing ratings)
