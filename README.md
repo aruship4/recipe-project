@@ -209,12 +209,12 @@ Since the **p-value is greater than 0.05**, we **fail to reject the null hypothe
 **Prediction Problem:** Predict the protein level of recipes.
 **Type of prediction problem:** regression (protein is a continuous variable)
 
-**Response variable:** The response variable is `protein` (grams per serving). We chose this variable because protein is a key nutritional component that influences how a recipe fits into a diet or meal plan. Accurate prediction of protein content can help users make informed dietary choices.
+**Response variable:** The response variable is `protein` (PDV). We chose this variable because protein is a key nutritional component that influences how a recipe fits into a diet or meal plan. Accurate prediction of protein content can help users make informed dietary choices.
 
 **Evaluation metrics:** 
 We chose **RMSE** and **R²** because they are well-suited for regression problems and provide complementary insights:
 
-- **RMSE** measures the average magnitude of prediction errors in the same units as the response variable (grams of protein). This makes it **directly interpretable** and easy to communicate. We preferred RMSE over Mean Absolute Error (MAE) because RMSE penalizes larger errors more heavily, which is useful if large deviations in protein prediction are particularly undesirable.
+- **RMSE** measures the average magnitude of prediction errors in the same units as the response variable (protein (PDV)). This makes it **directly interpretable** and easy to communicate. We preferred RMSE over Mean Absolute Error (MAE) because RMSE penalizes larger errors more heavily, which is useful if large deviations in protein prediction are particularly undesirable.
 
 - **R²** indicates the proportion of variance in protein content that is explained by the model. This gives a sense of **how well the model captures the underlying patterns** in the data beyond just the average error. We chose R² over metrics like adjusted R² because we are primarily comparing models with similar numbers of features and want a straightforward measure of explanatory power.
 
@@ -234,27 +234,27 @@ For the baseline model, I used a **linear regression model** to predict the prot
 
 The numerical features were standardized using StandardScaler so they were on comparable scales before training. For the text-based tags column, I used TF-IDF Vectorization to convert the words into numerical representations that the model could train from.
 
-The baseline model achieved a **Train RMSE of 33.127** and a **Test RMSE of 26.898**, along with a **Train R² of 0.601** and a **Test R² of 0.642.** While the model explains a moderate amount of variance (Test R² = 0.642), the RMSE of ~27 grams indicates that predictions can still be off by a substantial amount. Thus, this baseline provides a simple, interpretable starting point but would likely need additional features or more sophisticated modeling to achieve high predictive accuracy.
+The baseline model achieved a **Train RMSE of 33.127** and a **Test RMSE of 26.898**, along with a **Train R² of 0.601** and a **Test R² of 0.642.** While the model explains a moderate amount of variance (Test R² = 0.642), the RMSE of ~27 indicates that predictions can **still be off by a substantial amount**. Thus, this baseline provides a simple, interpretable starting point but would likely need additional features or more sophisticated modeling to achieve high predictive accuracy. My current model is "good," but there is definitely room for improvement.
 
 ##  Final Model
 
-For our final model, I used a **Random Forest Regressor** to predict the protein content of recipes. This model builds on our baseline by incorporating engineered nutritional features and text-based features extracted from recipe tags.
+For our final model, I used a **Random Forest Regressor** to predict the protein content of recipes. Random Forest can capture nonlinear relationships and interactions between nutritional and textual features, which a linear model might miss. This model builds on our baseline by incorporating engineered nutritional features and text-based features extracted from recipe tags.
 
 ### Features Used:
 
 I trained the model using the following features:
 
 - log_calories
-  - I applied a log transformation to the calorie values using log(calories + 1) to reduce skew and limit the impact of extreme outliers.
+  - I applied a log transformation to the calorie values using log(calories + 1) to reduce skew and limit the impact of extreme outliers. This is important because extremely high-calorie recipes could disproportionately influence the model, while most recipes have moderate calorie content.
 
 - cal_to_carb_ratio: I created a calorie-to-carbohydrate ratio feature: calories / (carbohydrates + 1)
-  - This captures the nutritional balance of each recipe more effectively than raw values alone.
+  - This captures the nutritional balance of each recipe more effectively than raw values alone. Recipes with higher calorie-to-carb ratios are more likely to contain protein-rich ingredients such as meat, eggs, or nuts.
 
 - carbohydrates
-  - I included total carbohydrate content as a direct macronutrient feature.
+  - I included total carbohydrate content as a direct macronutrient feature. Protein content may correlate with other macronutrients; for instance, recipes high in carbohydrates but low in protein may have different ingredients than balanced or protein-rich recipes.
 
 - tag_str
-  - I combined recipe tags into a single string and used TF-IDF vectorization to extract useful text-based features from the tags.
+  - I combined recipe tags into a single string and used TF-IDF vectorization to extract useful text-based features from the tags. Tags often describe ingredients or preparation methods (“chicken”, “tofu”, “beans”), which are strong indicators of protein content. Encoding this textual information allows the model to learn associations between specific tags and protein levels.
 
 ### Preprocessing and Model Pipeline
 
@@ -324,9 +324,9 @@ I then computed the RMSE for each group to measure predictive performance.
 RMSE by group:
 
 | is_main_dish | RMSE|
-|:---------|--------:|
-| RMSE     |  21.80  |
-| R²       |  23.28  |
+|:-------------|----:|
+| RMSE         |21.80|
+| R²           |23.28|
 
 **Observed RMSE difference (main - non-main):** 1.49
 
