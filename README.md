@@ -86,7 +86,6 @@ Embed at least one grouped table or pivot table in your website and explain its 
 
 For Bivariate Analysis, I examined the relationship between protein (PDV) and average recipe ratings. From the plot, we can see as Protein (PDV) increases, average recipe ratings increase as well.
 
-
 <iframe
   src="assets/protein_vs_avg.html"
   width="800"
@@ -291,13 +290,13 @@ We split the test set into two groups based on the is_main_dish column:
 
 We then computed the RMSE for each group to measure predictive performance.
 
-Null Hypothesis (H0): The model’s RMSE is similar across main-dish and non-main-dish recipes; any observed difference is due to random chance.
+**Null Hypothesis (H0):** The model’s RMSE is similar across main-dish and non-main-dish recipes; any observed difference is due to random chance.
 
-Alternative Hypothesis (H1): The model’s RMSE differs between main-dish and non-main-dish recipes.
+**Alternative Hypothesis (H1):** The model’s RMSE differs between main-dish and non-main-dish recipes.
 
-Test Statistic: Difference in RMSE between main-dish and non-main-dish groups (RMSE_main - RMSE_non-main).
+**Test Statistic:** Difference in RMSE between main-dish and non-main-dish groups (RMSE_main - RMSE_non-main).
 
-Significance Level: 0.05
+**Significance Level:** 0.05
 
 ### Results
 
@@ -316,8 +315,8 @@ RMSE by group:
 | RMSE     |  21.80  |
 | R²       |  23.28  |
 
-Observed RMSE difference (main - non-main): 1.49
+**Observed RMSE difference (main - non-main):** 1.49
 
-Permutation p-value: 0.89
+**Permutation p-value:** 0.89
 
 Since the p-value (0.89) is greater than 0.05, we fail to reject the null hypothesis. This indicates there is no significant difference in model performance between main-dish and non-main-dish recipes, suggesting the model is reasonably fair with respect to recipe type.
