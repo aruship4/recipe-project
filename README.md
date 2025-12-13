@@ -332,4 +332,8 @@ RMSE by group:
 
 **Permutation p-value:** 0.89
 
-Since the p-value (0.89) is greater than 0.05, we fail to reject the null hypothesis. This indicates there is no significant difference in model performance between main-dish and non-main-dish recipes, suggesting the model is reasonably fair with respect to recipe type.
+To run the permutation test, we first calculated the prediction errors (RMSE) for main-dish and non-main-dish recipes in the test set. The observed difference in RMSE between main and non-main dishes was 1.49 (main - non-main). To test whether this difference could have arisen by random chance, we performed a permutation test.
+
+We randomly shuffled the is_main_dish labels **2,000 times,** recalculating the RMSE difference for each shuffled dataset. This generated a null distribution of RMSE differences under the assumption that the model is fair (i.e., group membership does not affect prediction error).
+
+After comparing the observed RMSE difference to this null distribution, we obtained a p-value of 0.89. Since the p-value is greater than 0.05, **we fail to reject the null hypothesis.** This indicates that the model’s prediction error does not differ significantly between main-dish and non-main-dish recipes, suggesting that the model is reasonably fair with respect to recipe type.
