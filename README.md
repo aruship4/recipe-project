@@ -328,7 +328,7 @@ RMSE by group:
 | False        |21.80|
 | True         |23.28|
 
-**Observed RMSE difference (RMSEmain - RMSEnon-main):** 1.49
+**Observed RMSE difference (RMSE_main - RMSE_non-main):** 1.49
 
 **Permutation p-value:** 0.89
 
