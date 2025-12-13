@@ -304,9 +304,9 @@ I split the test set into two groups based on the is_main_dish column:
 
 I then computed the RMSE for each group to measure predictive performance.
 
-**Null Hypothesis (H0):** The model’s RMSE is similar across main-dish and non-main-dish recipes; any observed difference is due to random chance.
+**Null Hypothesis (H0):** The model’s RMSE is similar across main-dish and non-main-dish recipes; any observed difference is due to random chance. (RMSE_main - RMSE_non-main = 0)
 
-**Alternative Hypothesis (H1):** The model’s RMSE differs between main-dish and non-main-dish recipes.
+**Alternative Hypothesis (H1):** The model’s RMSE differs between main-dish and non-main-dish recipes. (RMSE_main - RMSE_non-main != 0)
 
 **Test Statistic:** Difference in RMSE between main-dish and non-main-dish groups (RMSE_main - RMSE_non-main).
 
@@ -325,10 +325,10 @@ RMSE by group:
 
 | is_main_dish | RMSE|
 |:-------------|----:|
-| RMSE         |21.80|
-| R²           |23.28|
+| False        |21.80|
+| True         |23.28|
 
-**Observed RMSE difference (main - non-main):** 1.49
+**Observed RMSE difference (RMSEmain - RMSEnon-main):** 1.49
 
 **Permutation p-value:** 0.89
 
