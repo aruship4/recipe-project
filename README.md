@@ -295,7 +295,7 @@ Overall, the model provides accurate and useful predictions of recipe protein co
 
 ## Fairness Analysis
 
-To evaluate fairness of our final model, we examined whether the model’s performance differed between main-dish recipes and non-main dishes. Main dishes tend to have higher protein content, so it is important to ensure the model predicts fairly across these groups.
+To evaluate fairness of our final model, we examined whether the model’s performance differed between main-dish recipes and non-main dishes. It is important to ensure the model predicts fairly across these groups.
 
 I split the test set into two groups based on the is_main_dish column:
 
