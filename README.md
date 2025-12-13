@@ -142,41 +142,28 @@ I ran a permutation test by shuffling the missingness of average rating 1000 tim
 
 The red line on the graph represents the **observed statistic** of **-0.003**, meaning that meaning main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that we found **(0.009)** is < 0.05, we **reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish` (whether a recipe is a main dish or not)
 
-2. Missingness of avg_rating vs. recipe duration (minutes).
+2. Missingness of avg_rating vs. sodium (PDV).
 
-The second permutation test checks whether the missingness of avg_rating depends on the `minutes` column.
+The second permutation test checks whether the missingness of avg_rating depends on the `sodium` column.
 
-**Null Hypothesis:** The missingness of ratings does not depend on the minutes it takes to make the recipe
+**Null Hypothesis:** The missingness of ratings does not depend on the sodium content.
 
-**Alternate Hypothesis:** The missingness of ratings does depend on on the minutes it takes to make the recipe.
+**Alternate Hypothesis:** The missingness of ratings does depend ont the sodium content.
 
-**Test Statistic:** The absolute difference in average cooking time (minutes) between recipes with missing `avg_rating` and non-missing `avg_rating`.
+**Test Statistic:** The absolute difference in average sodium between recipes with missing `avg_rating` and non-missing `avg_rating`.
 
 **Significance Level:** 0.05
 
 <iframe
-  src="assets/missingness_minutes.html"
+  src="assets/missingness_sodium.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
 
-The red line on the graph represents the **observed statistic** of **-0.003**, meaning that meaning main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that we found **(0.009)** is < 0.05, we **reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish` (whether a recipe is a main dish or not)
-Observed difference: 0.0136
-(meaning long recipes have a noticeably higher rate of missing ratings)
-
-Interpretation of the plot:
-The permutation distribution is tightly centered near 0. The observed value (≈ 0.014) lies far in the right tail, well outside the range of typical permuted differences.
-
-Conclusion:
-This produces a very small p-value, providing strong evidence that missingness of avg_rating depends on recipe length.
-
-Interpretation:
-Recipes that take longer than an hour to prepare appear substantially more likely to be missing average ratings. This suggests that users may be less likely to rate or review long recipes—possibly because they choose quicker dishes more often or because longer recipes are attempted less frequently.
+The red line on the graph represents the **observed statistic** of **-0.667**, meaning that mean main dishes have slightly lower missingness than non-main dishes. Since the **p_value** that we found **(0.7696)** is > 0.05, we **fail to reject the null hypothesis**. The missingness of `avg_rating` does depend on `is_main-dish`.
 
 ### Summary of Missingness Findings
-
-Missingness of avg_rating is not independent of at least two observed variables (main dish status and recipe duration). The dependency with recipe duration is much stronger and more practically meaningful. These results support the idea that the avg_rating variable is MAR (Missing At Random) with respect to at least some observed features—meaning the missingness can be partially explained by variables included in the dataset. This suggests that imputations or modeling approaches that condition on recipe attributes (like duration) may be appropriate, whereas approaches assuming MCAR would not be justified.
 
 
 ## Hypothesis Testing
@@ -211,66 +198,57 @@ The observed difference in mean ratings was -0.025375283811557736, indicated by 
 If p_value < 0.05: “We reject H0 at α = 0.05. The data provide evidence that high-protein recipes get higher average ratings than low-protein recipes.”
 
 If p_value >= 0.05: “We fail to reject H0 at α = 0.05. The data do not provide strong evidence that high-protein recipes get higher average ratings than low-protein recipes.”
+
 Caveat: This is an observational analysis: confounding variables (recipe type, sweetness, ingredient quality) could explain part of any observed relationship.
 
 Since the p-value is **greater** than 0.05, we **fail to reject** the null hypothesis. This suggests that high-protein recipes do not receive higher average ratings compared to low-protein recipes.
-
 
 ## Prediction Problem
 
 Prediction Problem: Predict the protein level of recipes.
 Type of prediction problem: regression (protein is a continuous variable)
 
-
 ## Baseline Model
-
 
 For the baseline model, I used a linear regression model to predict the protein content of recipes. The dataset was split into training and test sets. The model used the following features:
 
-calories (numerical)
+- Calories (PDV) (numerical)
+- Carbohydrates (PDV) (numerical)
+- tags (text data converted into numerical features using TF–IDF)
 
-carbohydrates (numerical)
+The numerical features were standardized using StandardScaler so they were on comparable scales before training. For the text-based tags column, I used TF-IDF Vectorization to convert the words into numerical representations that the model could train from.
 
-tags (text data converted into numerical features using TF–IDF)
-
-The numerical features were standardized using StandardScaler so they were on comparable scales before training. For the text-based tags column, I used TF-IDF Vectorization to convert the words into numerical representations that the model could learn from.
-
-The baseline model achieved a Train RMSE of 33.127221394648664 and a Test RMSE of 26.89842012868557, along with a Train R² of 0.6010357558770942 and a Test R² of 0.641604648153275. These results indicate that the model captures some patterns in the data, but still leaves room for improvement in accurately predicting protein content.
+The baseline model achieved a Train RMSE of 33.127 and a Test RMSE of 26.898, along with a Train R² of 0.601 and a Test R² of 0.642. These results indicate that the model captures some patterns in the data, but still leaves room for improvement in accurately predicting protein content.
 
 The purpose of this baseline model was to establish a simple, interpretable starting point before adding more sophisticated features and modeling techniques.
 
 ##  Final Model
 
-
-Final Model
-
 For our final model, I used a Random Forest Regressor to predict the protein content of recipes. This model builds on our baseline by incorporating engineered nutritional features and text-based features extracted from recipe tags.
 
-Features Used
+### Features Used:
 
-(I) trained the model using the following features:
+I trained the model using the following features:
 
-log_calories
-- We applied a log transformation to the calorie values using log(calories + 1) to reduce skew and limit the impact of extreme outliers.
+- log_calories
+  - We applied a log transformation to the calorie values using log(calories + 1) to reduce skew and limit the impact of extreme outliers.
 
-cal_to_carb_ratio: I created a calorie-to-carbohydrate ratio feature: calories / (carbohydrates + 1)
-- This captures the nutritional balance of each recipe more effectively than raw values alone.
+- cal_to_carb_ratio: I created a calorie-to-carbohydrate ratio feature: calories / (carbohydrates + 1)
+  - This captures the nutritional balance of each recipe more effectively than raw values alone.
 
-carbohydrates
-- I included total carbohydrate content as a direct macronutrient feature.
+- carbohydrates
+  - I included total carbohydrate content as a direct macronutrient feature.
 
-tag_str
-- I combined recipe tags into a single string and used TF-IDF vectorization to extract useful text-based features from the tags.
+- tag_str
+  - I combined recipe tags into a single string and used TF-IDF vectorization to extract useful text-based features from the tags.
 
 ### Preprocessing and Model Pipeline
 
 I built a pipeline that:
 
-Standardized all numeric features using StandardScaler
-
-Converted text features into numerical form using TF-IDF Vectorization
-
-Trained a Random Forest Regressor for prediction
+- Standardized all numeric features using StandardScaler
+- Converted text features into numerical form using TF-IDF Vectorization
+- Trained a Random Forest Regressor for prediction
 
 ### Hyperparameter Tuning
 
@@ -278,13 +256,11 @@ We used GridSearchCV to tune the model and selected the best hyperparameters bas
 
 Best Parameters:
 
-n_estimators = 50
+- n_estimators = 50
+- max_depth = None
+- min_samples_leaf = 1
 
-max_depth = None
-
-min_samples_leaf = 1
-
-Model Performance
+### Model Performance
 
 We evaluated the model using RMSE and R² on both the training and test sets:
 
@@ -312,7 +288,6 @@ To evaluate fairness of our final model, we examined whether the model’s perfo
 We split the test set into two groups based on the is_main_dish column:
 
 - Main dishes (is_main_dish = True)
-
 - Non-main dishes (is_main_dish = False)
 
 We then computed the RMSE for each group to measure predictive performance.
@@ -344,6 +319,6 @@ RMSE by group:
 
 Observed RMSE difference (main - non-main): 1.49
 
-Permutation p-value: 0.88
+Permutation p-value: 0.89
 
-Since the p-value (0.88) is greater than 0.05, we fail to reject the null hypothesis. This indicates there is no significant difference in model performance between main-dish and non-main-dish recipes, suggesting the model is reasonably fair with respect to recipe type.
+Since the p-value (0.89) is greater than 0.05, we fail to reject the null hypothesis. This indicates there is no significant difference in model performance between main-dish and non-main-dish recipes, suggesting the model is reasonably fair with respect to recipe type.
