@@ -182,6 +182,10 @@ Approach: I compared the average ratings of recipes with protein content above t
 
 **Method:** I performed a permutation test by randomly shuffling the high/low protein labels 5000 times to simulate the distribution of mean differences under the null hypothesis.
 
+**Reasoning:** I chose a permutation test to compare average ratings between high-protein and low-protein recipes because it does not assume a specific distribution for the ratings. Recipe ratings are ordinal and may not follow a normal distribution, so traditional parametric tests like a t-test might not be fully appropriate. The permutation test is non-parametric, making it robust to the skewed and potentially irregular distribution of ratings in the dataset.
+
+Additionally, the test allows me to directly measure the difference in mean ratings between groups under the null hypothesis that protein content does not affect ratings. By randomly shuffling the high/low protein labels many times (5,000 permutations), I can generate a distribution for the mean difference and accurately assess whether the observed difference is statistically significant. This approach is suitable for observational data like this, where confounding factors may exist, and I want a method that is both flexible and rigorous.
+
 ### Results
 
 <iframe
